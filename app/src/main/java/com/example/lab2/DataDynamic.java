@@ -2,6 +2,7 @@ package com.example.lab2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +33,15 @@ public class DataDynamic extends Activity {
         Button buttonadd = findViewById(R.id.buttonadd);
         Button buttondelete = findViewById(R.id.buttondelete);
         Button buttonedit = findViewById(R.id.buttonedit);
+        Button buttonback = findViewById(R.id.buttonback);
         listview.setAdapter(TextAdapter);
+        Intent backint =  new Intent(DataDynamic.this, formregistration.class);
+//        Bundle arguments = getIntent().getExtras();
+//        String str = arguments.get("data").toString();
+//        TextAdapter.add(str);
+//        TextAdapter.notifyDataSetChanged();
+
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -101,6 +110,13 @@ public class DataDynamic extends Activity {
                     TextAdapter.notifyDataSetChanged();
                 }
 
+            }
+        });
+        buttonback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(backint);
+                finish();
             }
         });
     }
