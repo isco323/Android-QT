@@ -65,5 +65,14 @@ public class formregistration extends Activity {
         Log.i("Logs", "app started");
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("Logs", "app paused");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("Logs", "app resume");
+    }
 }
