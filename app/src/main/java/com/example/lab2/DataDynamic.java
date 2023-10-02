@@ -36,10 +36,12 @@ public class DataDynamic extends Activity {
         Button buttonback = findViewById(R.id.buttonback);
         listview.setAdapter(TextAdapter);
         Intent backint =  new Intent(DataDynamic.this, formregistration.class);
-//        Bundle arguments = getIntent().getExtras();
-//        String str = arguments.get("data").toString();
-//        TextAdapter.add(str);
-//        TextAdapter.notifyDataSetChanged();
+
+
+        Bundle arguments = getIntent().getExtras();
+        String str = arguments.get("data").toString();
+        TextAdapter.add(str);
+        TextAdapter.notifyDataSetChanged();
 
 
 

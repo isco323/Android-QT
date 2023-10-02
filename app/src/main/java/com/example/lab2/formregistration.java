@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,19 +21,42 @@ public class formregistration extends Activity {
         setContentView(R.layout.enterleave);
         buttonenter = findViewById(R.id.buttonenter);
         buttonleave = findViewById(R.id.buttonleave);
-        TextView Email = findViewById(R.id.editTextTextEmailAddress);
+        EditText Email = findViewById(R.id.editTextTextEmailAddress);
+        EditText password = findViewById(R.id.editTextTextPassword);
         Intent openIntent = new Intent(formregistration.this, DataDynamic.class);
         buttonenter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(openIntent);
-                openIntent.putExtra("data","datafromfirstactivity");
+                if(check())
+                {
+                    startActivity(openIntent);
+                    String data = Email.getText().toString();
+                    data += password.getText().toString();
+                    openIntent.putExtra("data",data.toString());
+                }
             }
+
+            private boolean check() {
+                Toast mytoast = new Toast(formregistration.this);
+                if(Email.getText().toString().equals(""))
+                {
+                    mytoast.makeText(formregistration.this, "Enter Email", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if(password.getText().toString().equals(""))
+                {
+                    mytoast.makeText(formregistration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                return true;
+            }
+
         });
         buttonleave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Email.setText("");
+                password.setText("");
             }
         });
     }
@@ -40,9 +64,9 @@ public class formregistration extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-//        Log.i("AppLogger", "Сработал старт");
-//        Toast mytoast = new Toast(this);
-//        mytoast.makeText(formregistration.this, "Сработал старт", Toast.LENGTH_SHORT).show();
+        Toast mytoast = new Toast(this);
+        mytoast.makeText(formregistration.this, "Enter user data", Toast.LENGTH_SHORT).show();
     }
+
 
 }
