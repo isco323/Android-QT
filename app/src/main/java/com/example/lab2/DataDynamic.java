@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,16 +36,17 @@ public class DataDynamic extends Activity {
         Button buttonedit = findViewById(R.id.buttonedit);
         Button buttonback = findViewById(R.id.buttonback);
         listview.setAdapter(TextAdapter);
-        Intent backint =  new Intent(DataDynamic.this, formregistration.class);
 
 
-        Bundle arguments = getIntent().getExtras();
-        String str = arguments.get("data").toString();
-        TextAdapter.add(str);
+        Bundle extras = getIntent().getExtras();
+        String data = null;
+        if(extras!=null)
+        {
+            data = extras.getString("data");
+            Log.d("MyLogs", "datareceived");
+        }
+        TextAdapter.add(data.toString());
         TextAdapter.notifyDataSetChanged();
-
-
-
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -117,6 +119,7 @@ public class DataDynamic extends Activity {
         buttonback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent backint =  new Intent(DataDynamic.this, formregistration.class);
                 startActivity(backint);
                 finish();
             }
@@ -127,6 +130,11 @@ public class DataDynamic extends Activity {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         return dateFormat.format(date);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     private void toasterr(String text, Button btn) {

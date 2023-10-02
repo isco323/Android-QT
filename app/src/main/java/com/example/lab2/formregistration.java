@@ -29,10 +29,10 @@ public class formregistration extends Activity {
             public void onClick(View view) {
                 if(check())
                 {
+                    String data;
+                    data = "Email: " + Email.getText().toString() + "\nPassword: "+ password.getText().toString();
+                    openIntent.putExtra("data",data);
                     startActivity(openIntent);
-                    String data = Email.getText().toString();
-                    data += password.getText().toString();
-                    openIntent.putExtra("data",data.toString());
                 }
             }
 
@@ -64,8 +64,7 @@ public class formregistration extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast mytoast = new Toast(this);
-        mytoast.makeText(formregistration.this, "Enter user data", Toast.LENGTH_SHORT).show();
+        Log.i("Logs", "app started");
     }
 
 
