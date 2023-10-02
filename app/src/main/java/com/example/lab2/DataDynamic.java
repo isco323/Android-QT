@@ -12,18 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
-public class DataDynamic extends Activity {
+public class DataDynamic extends Activity{
     ArrayList<String> mystringarray = new ArrayList<String>();
-    ArrayAdapter<String> TextAdapter;
     ArrayList<String> selecteddata = new ArrayList<String>();
+    ArrayList<String> serialization = new ArrayList<>();
+    ArrayAdapter<String> TextAdapter;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,13 +122,26 @@ public class DataDynamic extends Activity {
         buttonback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                serialize();
                 Intent backint =  new Intent(DataDynamic.this, formregistration.class);
                 startActivity(backint);
                 finish();
             }
+
+            private void serialize() {
+                try{
+                    FileOutputStream fos = new FileOutputStream("List");
+                    ObjectOutputStream oos;
+                }
+                catch (FileNotFoundException e)
+                {
+                    Log.i("Logs","File not found");
+                }
+
+            }
+
         });
     }
-
     private String dateshow() {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
