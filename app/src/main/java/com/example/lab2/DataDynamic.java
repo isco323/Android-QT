@@ -2,8 +2,10 @@ package com.example.lab2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,14 +16,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class DataDynamic extends Activity{
+    private static final String FILENAME = "hello_file";
     ArrayList<String> mystringarray = new ArrayList<String>();
     ArrayList<String> selecteddata = new ArrayList<String>();
     ArrayList<String> serialization = new ArrayList<>();
@@ -39,8 +46,6 @@ public class DataDynamic extends Activity{
         Button buttonedit = findViewById(R.id.buttonedit);
         Button buttonback = findViewById(R.id.buttonback);
         listview.setAdapter(TextAdapter);
-
-
         Bundle extras = getIntent().getExtras();
         String data = null;
         if(extras!=null)
@@ -128,19 +133,50 @@ public class DataDynamic extends Activity{
                 finish();
             }
 
-            private void serialize() {
-                try{
-                    FileOutputStream fos = new FileOutputStream("List");
-                    ObjectOutputStream oos;
-                }
-                catch (FileNotFoundException e)
-                {
-                    Log.i("Logs","File not found");
-                }
 
-            }
 
         });
+    }
+
+    private void serialize() {
+        try {
+            String str = "";
+            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            for(int i = 0; i<mystringarray.size();i++)
+            {
+                str = mystringarray.get(i);
+                fos.write(str.getBytes(StandardCharsets.UTF_8));
+            }
+            fos.close();
+            Log.i("Logs","Success");
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.i("Logs",e.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+    private boolean deserialize(){
+        try {
+            String str = "";
+            FileInputStream fis = openFileInput(FILENAME);
+            fis.read(str.getBytes());
+            mystringarray.add(str.toString());
+            String data = fis.toString();
+            fis.close();
+            Log.i("Logs","Success");
+            return true;
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.i("Logs",e.toString());
+            return false;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private String dateshow() {
         Date date = new Date();
