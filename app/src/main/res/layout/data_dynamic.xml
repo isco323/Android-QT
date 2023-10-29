@@ -35,29 +35,41 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
-            android:text="Удалить" />
+            android:text="@string/delete" />
 
         <Button
             android:id="@+id/buttonedit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
-            android:text="Редактировать" />
+            android:text="@string/edit" />
 
         <Button
             android:id="@+id/buttonadd"
             android:layout_width="161dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
-            android:text="Добавить" />
+            android:text="@string/add" />
 
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonback"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Назад" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonback"
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:text="@string/stepback" />
+
+        <Button
+            android:id="@+id/retbutton"
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ret" />
+    </LinearLayout>
 
 </LinearLayout>

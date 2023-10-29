@@ -1,9 +1,13 @@
 package com.example.lab2;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,33 +18,40 @@ import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DataDynamic extends Activity{
+    ListView listview;
     ArrayList<String> mystringarray = new ArrayList<String>();
     ArrayList<String> selecteddata = new ArrayList<String>();
-    ArrayList<String> serialization = new ArrayList<>();
+    Set<String> serialize = new HashSet<String>();
     ArrayAdapter<String> TextAdapter;
+    Button buttonadd, buttondelete, buttonedit, buttonback, retbutton;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private final String keyone = "table";
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "MissingInflatedId"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_dynamic);
         TextAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, mystringarray);
-        ListView listview = findViewById(R.id.list_view);
-        Button buttonadd = findViewById(R.id.buttonadd);
-        Button buttondelete = findViewById(R.id.buttondelete);
-        Button buttonedit = findViewById(R.id.buttonedit);
-        Button buttonback = findViewById(R.id.buttonback);
+        listview = findViewById(R.id.list_view);
+        buttonadd = findViewById(R.id.buttonadd);
+        buttondelete = findViewById(R.id.buttondelete);
+        buttonedit = findViewById(R.id.buttonedit);
+        buttonback = findViewById(R.id.buttonback);
+        retbutton = findViewById(R.id.retbutton);
         listview.setAdapter(TextAdapter);
-
-
+        sharedPreferences = this.getPreferences(MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         Bundle extras = getIntent().getExtras();
         String data = null;
         if(extras!=null)
@@ -50,6 +61,17 @@ public class DataDynamic extends Activity{
         }
         TextAdapter.add(data.toString());
         TextAdapter.notifyDataSetChanged();
+        retbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Set<String> set = sharedPreferences.getStringSet(keyone, null);
+                List<String> list = new ArrayList<String>(set);
+                for(int i = 0 ; i < list.size() ; i++){
+                    TextAdapter.add(list.get(i));
+                }
+                TextAdapter.notifyDataSetChanged();
+            }
+        });
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -61,10 +83,10 @@ public class DataDynamic extends Activity{
             }
 
         });
-
         buttonadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 EditText data = findViewById(R.id.data);
                 String content = data.getText().toString();
                 if(!content.isEmpty())
@@ -72,8 +94,9 @@ public class DataDynamic extends Activity{
                     TextAdapter.add(content);
                     data.setText("");
                     TextAdapter.notifyDataSetChanged();
-                }
 
+                }
+                TextAdapter.notifyDataSetChanged();
             }
     });
         buttondelete.setOnClickListener(new View.OnClickListener() {
@@ -122,26 +145,17 @@ public class DataDynamic extends Activity{
         buttonback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                serialize();
+                serialize.addAll(mystringarray);
+                editor.putStringSet(keyone, serialize);
+                editor.apply();
                 Intent backint =  new Intent(DataDynamic.this, formregistration.class);
                 startActivity(backint);
                 finish();
             }
-
-            private void serialize() {
-                try{
-                    FileOutputStream fos = new FileOutputStream("List");
-                    ObjectOutputStream oos;
-                }
-                catch (FileNotFoundException e)
-                {
-                    Log.i("Logs","File not found");
-                }
-
-            }
-
         });
     }
+
+
     private String dateshow() {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
