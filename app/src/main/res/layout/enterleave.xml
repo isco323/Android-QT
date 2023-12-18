@@ -32,16 +32,4 @@
         android:layout_height="wrap_content"
         android:text="Войти" />
 
-    <Button
-        android:id="@+id/buttonleave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Отменить" />
-
-    <Button
-        android:id="@+id/buttonload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/load" />
-
 </LinearLayout>

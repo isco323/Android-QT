@@ -1,5 +1,6 @@
 package com.example.lab2;
 
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -42,11 +43,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(DBContract.UserEntry.TABLE_NAME, null, values);
         db.close();
     }
-    public void deleteUser(
-
-    ) {
+    public void deleteUser(User user)
+    {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(DBContract.UserEntry.TABLE_NAME, DBContract.UserEntry.COLUMN_NAME_LOGIN ,null);
+        db.delete(DBContract.UserEntry.TABLE_NAME,DBContract.UserEntry.COLUMN_NAME_LOGIN + "=? and " + DBContract.UserEntry.COLUMN_NAME_PASS + "=?",new String[]{user._login, user._pass});
         db.close();
     }
     public List<User> getAllUsers() {
@@ -67,10 +67,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return usersList;
     }
-    public void CheckUsr(User user){
 
-    }
-    public void chngpsw(User user){
-
+    public void chngpsw(User user, String newdata)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBContract.UserEntry.COLUMN_NAME_LOGIN, user.getLogin());
+        values.put(DBContract.UserEntry.COLUMN_NAME_PASS, newdata);
+        db.update(DBContract.UserEntry.TABLE_NAME, values, DBContract.UserEntry.COLUMN_NAME_LOGIN + "=? and " + DBContract.UserEntry.COLUMN_NAME_PASS + "=?",new String[]{user._login, user._pass});
+        db.close();
     }
 }
